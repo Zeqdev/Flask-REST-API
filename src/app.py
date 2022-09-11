@@ -44,6 +44,13 @@ def post():
     connection.connection.commit()
     return jsonify({'message': 'Company created successfully'})
 
+@app.route('/api/companies/<int:id>', methods = ['PUT'])
+def put(id):
+    cursor = connection.connection.cursor()
+    cursor.execute("UPDATE api_company SET name = %s, city = %s, country = %s WHERE id = %s", (request.json['name'], request.json['city'], request.json['country'], id))
+    connection.connection.commit()
+    return jsonify({'message': 'Company updated successfully'})
+
 if __name__ == '__main__':
     app.config.from_object(config['development'])
     app.run()
