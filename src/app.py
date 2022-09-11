@@ -51,6 +51,13 @@ def put(id):
     connection.connection.commit()
     return jsonify({'message': 'Company updated successfully'})
 
+@app.route('/api/companies/<int:id>', methods = ['DELETE'])
+def  delete(id):
+    cursor = connection.connection.cursor()
+    cursor.execute("DELETE FROM api_company WHERE id = %s", (id,))
+    connection.connection.commit()
+    return jsonify({'message': 'Company deleted successfully'})
+
 if __name__ == '__main__':
     app.config.from_object(config['development'])
     app.run()
