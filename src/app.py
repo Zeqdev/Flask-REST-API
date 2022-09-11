@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
 from config import config
 
@@ -36,6 +36,13 @@ def get_by_id(id):
         'country': data[4],
     }
     return jsonify(company)
+
+@app.route('/api/companies', methods=['POST'])
+def post():
+    cursor = connection.connection.cursor()
+    cursor.execute("INSERT INTO api_company (name, city, country) VALUES (%s, %s, %s)", (request.json['name'], request.json['city'], request.json['country']))
+    connection.connection.commit()
+    return jsonify({'message': 'Company created successfully'})
 
 if __name__ == '__main__':
     app.config.from_object(config['development'])
